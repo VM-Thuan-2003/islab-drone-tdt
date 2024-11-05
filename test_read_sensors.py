@@ -12,6 +12,9 @@ mag_data = {"x": 0, "y": 0, "z": 0}
 # Initialize variables to hold optical flow data
 optical_flow_data = {"x": 0, "y": 0, "ground_distance": 0}
 
+# Initialize variables to hold range finder data
+range_finder_data = {"distance": 0}
+
 # MAVLink callback for RAW_IMU data
 @vehicle.on_message('RAW_IMU')
 def listener_raw_imu(self, name, message):
@@ -25,6 +28,12 @@ def listener_raw_imu(self, name, message):
 def listener_optical_flow(self, name, message):
     global optical_flow_data
     optical_flow_data = {"x": message.flow_x, "y": message.flow_y, "ground_distance": message.ground_distance}
+
+# MAVLink callback for DISTANCE_SENSOR data
+@vehicle.on_message('DISTANCE_SENSOR')
+def listener_distance_sensor(self, name, message):
+    global range_finder_data
+    range_finder_data = {"distance": message.current_distance}
 
 # Function to display sensor data
 def read_sensor_data():
@@ -41,6 +50,9 @@ def read_sensor_data():
     
     # Print optical flow data
     print(f"Optical Flow - X: {optical_flow_data['x']}, Y: {optical_flow_data['y']}, Ground Distance: {optical_flow_data['ground_distance']}")
+    
+    # Print range finder data
+    print(f"Range Finder - Distance: {range_finder_data['distance']}")
 
 # Loop to keep reading sensor data
 try:

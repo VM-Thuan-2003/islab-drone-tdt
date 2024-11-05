@@ -1,5 +1,6 @@
 import cv2
 import os
+import time
 
 # Create a folder named 'videos' if it doesn't exist
 output_folder = 'videos_output'
@@ -16,7 +17,7 @@ def get_unique_filename(base_path, base_name, extension):
     return new_filename
 
 # Open a connection to the camera (0 is usually the default camera)
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 # Define the codec
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Codec for .mp4 format
@@ -26,8 +27,10 @@ base_filename = 'video'
 unique_filename = get_unique_filename(output_folder, base_filename, 'mp4')
 output_file_path = os.path.join(output_folder, unique_filename)
 
+fps = 30.0
+
 # Create VideoWriter object
-out = cv2.VideoWriter(output_file_path, fourcc, 30.0, (640, 640))  # 20 FPS, resolution 640x640
+out = cv2.VideoWriter(output_file_path, fourcc, fps, (640, 640))  # 20 FPS, resolution 640x640
 
 if not cap.isOpened():
     print("Error: Could not open camera.")
@@ -50,6 +53,8 @@ else:
         # Display the frame
         cv2.imshow('Camera Feed', frame)
 
+        time.sleep(1/fps)
+        
         # Press 'q' to exit
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

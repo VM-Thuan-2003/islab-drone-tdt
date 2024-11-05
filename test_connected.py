@@ -5,7 +5,7 @@ from thread_manager import ThreadManager
 from logs import Printer
 import time
 class Main:
-    def __init__(self, string_connect="/dev/ttyACM0"):
+    def __init__(self, string_connect="com27"):
         self._print = Printer(ena_logs=True, name="Main")
         self.vehicle = Vehicle(string_connect, ena_logs=True)
         self.navigation = Navigation(self.vehicle._vehicle, ena_logs=True)

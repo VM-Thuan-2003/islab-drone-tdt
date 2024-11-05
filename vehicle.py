@@ -11,7 +11,7 @@ class Vehicle:
         self._print = Printer(ena_logs=self._ena_logs, name="Vehicle")
         
         self._string_connect = string_connect
-        self._vehicle = connect(self._string_connect, wait_ready=True)
+        self._vehicle = connect(self._string_connect,baud= 57600, wait_ready=True)
 
         self.mid_throttle = 0.5
         self.max_throttle = 0.9

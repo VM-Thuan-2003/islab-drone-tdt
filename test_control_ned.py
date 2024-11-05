@@ -8,7 +8,7 @@ vehicle = connect('udp:127.0.0.1:14550', baud=115200, wait_ready=True)
 def arm_and_takeoff(target_altitude):
     """ Arms the drone and takes off to a specified altitude """
     print("Arming motors")
-    vehicle.mode = VehicleMode("GUIDED_NOGPS")
+    # vehicle.mode = VehicleMode("GUIDED")
     vehicle.armed = True
 
     # Confirm vehicle armed before attempting to take off
@@ -67,29 +67,68 @@ def land():
         time.sleep(1)
     print("Landed and disarmed")
 
+
+"""
+    This script demonstrates basic control of the drone using NED coordinates.
+
+    The drone takes off to a target altitude, then moves to a specified position
+    (north, east, down) relative to the starting position.
+
+    It then lands.
+
+    The diagram above shows the relative orientation of the drone
+    movements. The drone moves in the direction of the arrow.
+
+    The drone is controlled using the `simple_goto` function, which sends a
+    command to move to a specified local position (NED coordinates).
+
+    The `simple_goto` function is a blocking call, so the script waits until
+    the drone reaches the target position before continuing.
+
+    The `simple_takeoff` and `land` functions are also blocking, so the script
+    waits until the drone takes off or lands before continuing.
+
+         N
+         -
+   W --------- E
+         -
+         S
+"""
+
 try:
-    # Takeoff to 2 meters
-    arm_and_takeoff(2)
+    
+    print(vehicle.location.local_frame)
+    
+    while True:
+        
+        print(f"Mode: {vehicle.mode.name}")
+        
+        if vehicle.mode.name == "GUIDED":
+        
+            # Takeoff to 2 meters
+            arm_and_takeoff(2)
+            
+            # Move to a local position: 1 meters north, 1 meters east, and hold altitude
+            print("Moving to position: North 1m, East 1m")
+            move_to_position(1, 1, 0)
 
-    # Move to a local position: 5 meters north, 5 meters east, and hold altitude
-    print("Moving to position: North 5m, East 5m")
-    move_to_position(5, 5, 0)
+            # Move to another position: North 1m, East 0m, and hold altitude
+            print("Moving to position: North 1m, East 0m")
+            move_to_position(1, 0, 0)
 
-    # Move to another position: North 10m, East 0m, and hold altitude
-    print("Moving to position: North 10m, East 0m")
-    move_to_position(10, 0, 0)
+            # Move back to the starting position
+            print("Returning to start position")
+            move_to_position(0, 0, 0)
+            
+            break
 
-    # Move back to the starting position
-    print("Returning to start position")
-    move_to_position(0, 0, 0)
-
-    # Land the drone
-    land()
 
 except KeyboardInterrupt:
+    # Land the drone
+    land()
     print("Exiting...")
 
 finally:
-    land()
+    # land()
     # Close vehicle connection
     vehicle.close()

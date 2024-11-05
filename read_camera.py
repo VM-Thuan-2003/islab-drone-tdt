@@ -1,8 +1,8 @@
 import cv2
+import time
 
 # Open a connection to the camera (0 is usually the default camera)
-cap = cv2.VideoCapture(1)
-
+cap = cv2.VideoCapture("E:/USER/HKI_2024_2025/ISLab/PROJECT_TDT/test/videos_rasp/video_10.mp4")
 if not cap.isOpened():
     print("Error: Could not open camera.")
 else:
@@ -16,7 +16,9 @@ else:
             break
 
         # Display the frame
+        
         cv2.imshow('Camera Feed', frame)
+        time.sleep(1/30)
 
         # Press 'q' to exit
         if cv2.waitKey(1) & 0xFF == ord('q'):
