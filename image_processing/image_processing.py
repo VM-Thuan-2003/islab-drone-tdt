@@ -3,7 +3,7 @@ import time
 import numpy as np
 
 # Open the default camera
-cam = cv2.VideoCapture('videos_rasp/video_10.mp4')
+cam = cv2.VideoCapture('videos_rasp/video_8.mp4')
 
 def get_limits(color):
     c = np.uint8([[color]])  # BGR values
@@ -109,8 +109,8 @@ def main():
         # Control FPS
         elapsed_time = time.time() - start_time
         delay = max(1, int((frame_duration - elapsed_time) * 1000))  # Delay to maintain FPS
-
-        if cv2.waitKey(delay) == ord('q'):
+        time.sleep(delay)
+        if cv2.waitKey(1) == ord('q'):
             break
 
 if __name__ == "__main__":
