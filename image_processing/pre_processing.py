@@ -151,7 +151,7 @@ if __name__ == "__main__":
         
         hsv = image_processing.getHSV(frame)
         mask = image_processing.create_color_mask(frame, (100, 0, 0), 10)
-        mask_dilation = image_processing.dilation(mask,(7,7),1)
+        mask_dilation = image_processing.dilation(mask,(8,8),1)
         binary_combined_diff = image_processing.convert_diff_binary(hsv, frame)
         binary_combined = image_processing.convert_binary_combined_mask(binary_combined_diff, mask_dilation)
         
